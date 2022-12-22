@@ -11,6 +11,7 @@ const initialState: MainCanvasReduxState = {
   initialized: false,
   width: 0,
   height: 0,
+  tabsWidth: 400,
 };
 
 const mainCanvasReducer = createImmerReducer(initialState, {
@@ -32,12 +33,19 @@ const mainCanvasReducer = createImmerReducer(initialState, {
     state.width = 1010; // action.payload.width || state.width;
     state.initialized = true;
   },
+  [ReduxActionTypes.UPDATE_TABS_PANEL_WIDTH]: (
+    state: MainCanvasReduxState,
+    action: ReduxAction<{ width: number }>,
+  ) => {
+    state.tabsWidth = action.payload.width;
+  },
 });
 
 export interface MainCanvasReduxState {
   width: number;
   height: number;
   initialized: boolean;
+  tabsWidth: number;
 }
 
 export default mainCanvasReducer;

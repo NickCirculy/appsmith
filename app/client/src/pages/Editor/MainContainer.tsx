@@ -22,6 +22,7 @@ import { AppsmithLocationState } from "utils/history";
 import SideNavbar from "pages/Editor/SideNavbar";
 import useHorizontalResize from "utils/hooks/useHorizontalResize";
 import { tailwindLayers } from "constants/Layers";
+import { updateTabsPanelWidth } from "actions/editorActions";
 
 const SentryRoute = Sentry.withSentryRouting(Route);
 
@@ -64,20 +65,21 @@ function MainContainer() {
     dispatch(routeChanged(location));
   }, [location.pathname, location.hash]);
 
-  const [actionBarWidth, setActionBarWidth] = useState(700);
+  const tabsPanelWidth = useSelector((state) => state.ui.mainCanvas.tabsWidth);
 
   const sidebarRef = useRef<HTMLDivElement>(null);
 
   const onWidthChange = useCallback(
     (width: number) => {
-      setActionBarWidth(width);
+      dispatch(updateTabsPanelWidth(width));
+      // setActionBarWidth(width);
     },
-    [actionBarWidth],
+    [tabsPanelWidth],
   );
 
   const onDragEnd = useCallback(() => {
-    setActionBarWidth(actionBarWidth);
-  }, [actionBarWidth]);
+    dispatch(updateTabsPanelWidth(tabsPanelWidth));
+  }, [tabsPanelWidth]);
 
   const {
     onMouseDown,
@@ -102,7 +104,7 @@ function MainContainer() {
             "relative transition-all transform duration-400": true,
             "translate-x-0 opacity-0": isPreviewMode,
             "flex flex-col overflow-auto opacity-100": !isPreviewMode,
-            [`w-[${actionBarWidth}px] min-w-[${actionBarWidth}px] translate-x-${actionBarWidth}`]: !isPreviewMode,
+            [`w-[${tabsPanelWidth}px] min-w-[${tabsPanelWidth}px] translate-x-${tabsPanelWidth}`]: !isPreviewMode,
           })}
           ref={sidebarRef}
           style={{
@@ -114,7 +116,7 @@ function MainContainer() {
             onMouseDown={onMouseDown}
             onTouchEnd={onMouseUp}
             onTouchStart={onTouchStart}
-            style={{ width: actionBarWidth }}
+            style={{ width: tabsPanelWidth }}
           >
             <SentryRoute component={EditorsRouter} />
           </div>

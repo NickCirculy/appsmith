@@ -27,8 +27,6 @@ import { quickScrollToWidget } from "utils/helpers";
 
 type Props = {
   width: number;
-  onDragEnd?: () => void;
-  onWidthChange: (width: number) => void;
 };
 
 export const PropertyPaneSidebar = memo((props: Props) => {
@@ -111,7 +109,7 @@ export const PropertyPaneSidebar = memo((props: Props) => {
       {/* PROPERTY PANE */}
       <div
         className={classNames({
-          [`js-property-pane-sidebar t--property-pane-sidebar bg-white flex h-full  border-l border-gray-200 transform transition duration-300 ${tailwindLayers.propertyPane}`]: true,
+          [`js-property-pane-sidebar t--property-pane-sidebar bg-white flex h-full w-full transform transition duration-300 ${tailwindLayers.propertyPane}`]: true,
           "relative ": !isPreviewMode,
           "fixed translate-x-full right-0": isPreviewMode,
         })}
@@ -135,13 +133,10 @@ export const PropertyPaneSidebar = memo((props: Props) => {
         <div
           className={classNames({
             "h-full p-0 overflow-y-auto min-w-72": true,
-            "max-w-104": !isAppSettingsPaneOpen,
             "transition-all duration-100": true,
           })}
           style={{
-            width: isAppSettingsPaneOpen
-              ? APP_SETTINGS_PANE_WIDTH
-              : props.width,
+            width: props.width,
           }}
         >
           {propertyPane}

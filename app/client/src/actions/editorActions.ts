@@ -47,6 +47,15 @@ export const updateCanvasLayoutAction = (width: number) => {
   };
 };
 
+export const updateTabsPanelWidth = (width: number) => {
+  return {
+    type: ReduxActionTypes.UPDATE_TABS_PANEL_WIDTH,
+    payload: {
+      width,
+    },
+  };
+};
+
 /**
  * This action when executed updates the status of saving entity to true
  * This function was created to add a sync to the entity update and shortcut command being fired to execute any command.
