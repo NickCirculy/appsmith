@@ -14,7 +14,6 @@ import {
   snipingModeSelector,
 } from "selectors/editorSelectors";
 import CanvasPropertyPane from "pages/Editor/CanvasPropertyPane";
-import useHorizontalResize from "utils/hooks/useHorizontalResize";
 import { getIsDraggingForSelection } from "selectors/canvasSelectors";
 import MultiSelectPropertyPane from "pages/Editor/MultiSelectPropertyPane";
 import { getIsDraggingOrResizing } from "selectors/widgetSelectors";
@@ -35,20 +34,7 @@ type Props = {
 export const PropertyPaneSidebar = memo((props: Props) => {
   const dispatch = useDispatch();
 
-  const sidebarRef = useRef<HTMLDivElement>(null);
   const prevSelectedWidgetId = useRef<string | undefined>();
-
-  const {
-    onMouseDown,
-    onMouseUp,
-    onTouchStart,
-    resizing,
-  } = useHorizontalResize(
-    sidebarRef,
-    props.onWidthChange,
-    props.onDragEnd,
-    true,
-  );
 
   const isPreviewMode = useSelector(previewModeSelector);
   const selectedWidgetIds = useSelector(getSelectedWidgets);
@@ -83,7 +69,7 @@ export const PropertyPaneSidebar = memo((props: Props) => {
   useEffect(() => {
     if (!isSnipingMode) {
       //update url hash with the selectedWidget
-      // dispatch(appendSelectedWidgetToUrl(selectedWidgetIds));
+      dispatch(appendSelectedWidgetToUrl(selectedWidgetIds));
       if (selectedWidgetIds.length === 1) {
         quickScrollToWidget(selectedWidgetIds[0]);
       }
@@ -129,7 +115,6 @@ export const PropertyPaneSidebar = memo((props: Props) => {
           "relative ": !isPreviewMode,
           "fixed translate-x-full right-0": isPreviewMode,
         })}
-        ref={sidebarRef}
       >
         {/* RESIZOR */}
         {/*{!isAppSettingsPaneOpen && (*/}
@@ -151,7 +136,7 @@ export const PropertyPaneSidebar = memo((props: Props) => {
           className={classNames({
             "h-full p-0 overflow-y-auto min-w-72": true,
             "max-w-104": !isAppSettingsPaneOpen,
-            "transition-all duration-100": !resizing,
+            "transition-all duration-100": true,
           })}
           style={{
             width: isAppSettingsPaneOpen

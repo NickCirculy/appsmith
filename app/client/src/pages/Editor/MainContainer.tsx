@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import * as Sentry from "@sentry/react";
 import { useDispatch, useSelector } from "react-redux";
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Route, useLocation } from "react-router";
 
 import EditorsRouter from "./routes";
@@ -20,6 +20,8 @@ import { routeChanged } from "actions/focusHistoryActions";
 import { getExplorerWidth } from "selectors/explorerSelector";
 import { AppsmithLocationState } from "utils/history";
 import SideNavbar from "pages/Editor/SideNavbar";
+import useHorizontalResize from "utils/hooks/useHorizontalResize";
+import { tailwindLayers } from "constants/Layers";
 
 const SentryRoute = Sentry.withSentryRouting(Route);
 
@@ -62,6 +64,28 @@ function MainContainer() {
     dispatch(routeChanged(location));
   }, [location.pathname, location.hash]);
 
+  const [actionBarWidth, setActionBarWidth] = useState(700);
+
+  const sidebarRef = useRef<HTMLDivElement>(null);
+
+  const onWidthChange = useCallback(
+    (width: number) => {
+      setActionBarWidth(width);
+    },
+    [actionBarWidth],
+  );
+
+  const onDragEnd = useCallback(() => {
+    setActionBarWidth(actionBarWidth);
+  }, [actionBarWidth]);
+
+  const {
+    onMouseDown,
+    onMouseUp,
+    onTouchStart,
+    resizing,
+  } = useHorizontalResize(sidebarRef, onWidthChange, onDragEnd);
+
   return (
     <>
       <Container className="relative w-full overflow-x-hidden">
@@ -77,16 +101,25 @@ function MainContainer() {
           className={classNames({
             "relative transition-all transform duration-400": true,
             "translate-x-0 opacity-0": isPreviewMode,
-            "flex flex-col overflow-auto w-[500px] min-w-[500px] translate-x-500 opacity-100": !isPreviewMode,
+            "flex flex-col overflow-auto opacity-100": !isPreviewMode,
+            [`w-[${actionBarWidth}px] min-w-[${actionBarWidth}px] translate-x-${actionBarWidth}`]: !isPreviewMode,
           })}
-          style={{ borderRight: "1px solid #e8e8e8" }}
+          ref={sidebarRef}
+          style={{
+            borderRight: "1px solid #e8e8e8",
+          }}
         >
-          <SentryRoute component={EditorsRouter} />
+          <div
+            className={`cursor-ew-resize ${tailwindLayers.resizer}`}
+            onMouseDown={onMouseDown}
+            onTouchEnd={onMouseUp}
+            onTouchStart={onTouchStart}
+            style={{ width: actionBarWidth }}
+          >
+            <SentryRoute component={EditorsRouter} />
+          </div>
         </div>
-        <div
-          className="relative flex flex-col w-full overflow-auto"
-          id="app-body"
-        >
+        <div className="relative flex flex-col overflow-auto" id="app-body">
           <WidgetsEditor />
         </div>
       </Container>

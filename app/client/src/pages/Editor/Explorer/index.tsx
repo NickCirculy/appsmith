@@ -42,7 +42,7 @@ function ExplorerContent() {
           if (
             !(trimQueryString(builderURL({ pageId })) === location.pathname)
           ) {
-            // history.push(builderURL({ pageId }));
+            history.push(builderURL({ pageId }));
             AnalyticsUtil.logEvent("WIDGET_TAB_CLICK", {
               type: "WIDGET_TAB",
               fromUrl: location.pathname,

@@ -19,6 +19,7 @@ import {
   GENERATE_TEMPLATE_FORM_PATH,
   matchBuilderPath,
   BUILDER_CHECKLIST_PATH,
+  BUILDER_CUSTOM_PATH,
 } from "constants/routes";
 import styled from "styled-components";
 import { useShowPropertyPane } from "utils/hooks/dragResizeHooks";
@@ -94,7 +95,11 @@ function EditorsRouter() {
     <Wrapper isVisible={isVisible} onClick={handleClose}>
       <PaneDrawer isVisible={isVisible} onClick={preventClose}>
         <Switch key={path}>
-          <SentryRoute component={PropertyPaneContainer} exact path={path} />
+          <SentryRoute
+            component={PropertyPaneContainer}
+            exact
+            path={BUILDER_CUSTOM_PATH}
+          />
           <SentryRoute
             component={IntegrationEditor}
             exact
