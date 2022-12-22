@@ -11,7 +11,8 @@ const initialState: MainCanvasReduxState = {
   initialized: false,
   width: 0,
   height: 0,
-  tabsWidth: 400,
+  tabsWidth: 600,
+  zoom: 0.8,
 };
 
 const mainCanvasReducer = createImmerReducer(initialState, {
@@ -23,14 +24,17 @@ const mainCanvasReducer = createImmerReducer(initialState, {
       action.payload.widgets &&
       action.payload.widgets[MAIN_CONTAINER_WIDGET_ID];
 
-    state.width = 1010; // mainCanvas?.rightColumn || state.width;
+    state.width = mainCanvas?.rightColumn || state.width;
+    state.zoom = 1;
     state.height = mainCanvas?.minHeight || state.height;
   },
   [ReduxActionTypes.UPDATE_CANVAS_LAYOUT]: (
     state: MainCanvasReduxState,
     action: ReduxAction<UpdateCanvasLayoutPayload>,
   ) => {
-    state.width = 1010; // action.payload.width || state.width;
+    state.width = action.payload.width || state.width;
+    console.log("POC", state.width);
+    state.zoom = Number(Math.abs(state.width / 1500).toFixed(3));
     state.initialized = true;
   },
   [ReduxActionTypes.UPDATE_TABS_PANEL_WIDTH]: (
@@ -46,6 +50,7 @@ export interface MainCanvasReduxState {
   height: number;
   initialized: boolean;
   tabsWidth: number;
+  zoom: number;
 }
 
 export default mainCanvasReducer;

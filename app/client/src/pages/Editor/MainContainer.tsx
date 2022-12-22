@@ -15,14 +15,17 @@ import {
 } from "constants/routes";
 import EntityExplorerSidebar from "components/editorComponents/Sidebar";
 import classNames from "classnames";
-import { previewModeSelector } from "selectors/editorSelectors";
+import { getCanvasWidth, previewModeSelector } from "selectors/editorSelectors";
 import { routeChanged } from "actions/focusHistoryActions";
 import { getExplorerWidth } from "selectors/explorerSelector";
 import { AppsmithLocationState } from "utils/history";
 import SideNavbar from "pages/Editor/SideNavbar";
 import useHorizontalResize from "utils/hooks/useHorizontalResize";
 import { tailwindLayers } from "constants/Layers";
-import { updateTabsPanelWidth } from "actions/editorActions";
+import {
+  updateCanvasLayoutAction,
+  updateTabsPanelWidth,
+} from "actions/editorActions";
 
 const SentryRoute = Sentry.withSentryRouting(Route);
 
@@ -68,10 +71,10 @@ function MainContainer() {
   const tabsPanelWidth = useSelector((state) => state.ui.mainCanvas.tabsWidth);
 
   const sidebarRef = useRef<HTMLDivElement>(null);
-
   const onWidthChange = useCallback(
     (width: number) => {
       dispatch(updateTabsPanelWidth(width));
+      dispatch(updateCanvasLayoutAction(screen.width - width - 100));
       // setActionBarWidth(width);
     },
     [tabsPanelWidth],
@@ -87,6 +90,8 @@ function MainContainer() {
     onTouchStart,
     resizing,
   } = useHorizontalResize(sidebarRef, onWidthChange, onDragEnd);
+
+  const canvasWidth = useSelector(getCanvasWidth);
 
   return (
     <>
@@ -121,7 +126,11 @@ function MainContainer() {
             <SentryRoute component={EditorsRouter} />
           </div>
         </div>
-        <div className="relative flex flex-col overflow-auto" id="app-body">
+        <div
+          className="relative flex flex-col overflow-auto"
+          id="app-body"
+          style={{ width: canvasWidth + 50 }}
+        >
           <WidgetsEditor />
         </div>
       </Container>

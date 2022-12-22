@@ -7,6 +7,7 @@ import {
   previewModeSelector,
   getCanvasWidth,
   showCanvasTopSectionSelector,
+  getCanvasZoom,
 } from "selectors/editorSelectors";
 import styled from "styled-components";
 import { getCanvasClassName } from "utils/generators";
@@ -38,6 +39,7 @@ const Container = styled.section<{
   overflow-x: auto;
   overflow-y: auto;
   background: ${({ background }) => background};
+
   &:before {
     position: absolute;
     top: 0;
@@ -53,6 +55,7 @@ function CanvasContainer() {
   const currentPageId = useSelector(getCurrentPageId);
   const isFetchingPage = useSelector(getIsFetchingPage);
   const canvasWidth = useSelector(getCanvasWidth);
+  const canvasZoom = useSelector(getCanvasZoom);
   const widgetsStructure = useSelector(getCanvasWidgetsStructure, equal);
   const pages = useSelector(getViewModePageList);
   const theme = useSelector(getCurrentThemeDetails);
@@ -89,6 +92,7 @@ function CanvasContainer() {
     node = (
       <Canvas
         canvasWidth={canvasWidth}
+        canvasZoom={canvasZoom}
         pageId={params.pageId}
         widgetsStructure={widgetsStructure}
       />

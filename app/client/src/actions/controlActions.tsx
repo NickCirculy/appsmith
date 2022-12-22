@@ -106,6 +106,8 @@ export interface UpdateWidgetPropertyPayload {
 export interface UpdateCanvasLayoutPayload {
   width: number;
   height: number;
+
+  zoom: number;
 }
 
 export interface SetWidgetDynamicPropertyPayload {
