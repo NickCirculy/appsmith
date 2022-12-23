@@ -71,17 +71,14 @@ function MainContainer() {
   const tabsPanelWidth = useSelector((state) => state.ui.mainCanvas.tabsWidth);
 
   const sidebarRef = useRef<HTMLDivElement>(null);
-  const onWidthChange = useCallback(
-    (width: number) => {
-      dispatch(updateTabsPanelWidth(width));
-      dispatch(updateCanvasLayoutAction(screen.width - width - 100));
-      // setActionBarWidth(width);
-    },
-    [tabsPanelWidth],
-  );
+  const onWidthChange = useCallback((width: number) => {
+    dispatch(updateTabsPanelWidth(width));
+    // setActionBarWidth(width);
+  }, []);
 
   const onDragEnd = useCallback(() => {
     dispatch(updateTabsPanelWidth(tabsPanelWidth));
+    dispatch(updateCanvasLayoutAction(screen.width - tabsPanelWidth - 100));
   }, [tabsPanelWidth]);
 
   const {
