@@ -103,8 +103,6 @@ const Canvas = memo((props: CanvasProps) => {
     backgroundForCanvas = selectedTheme.properties.colors.backgroundColor;
   }
 
-  console.log("POC", canvasZoom);
-
   try {
     return (
       <Container
