@@ -93,32 +93,34 @@ function MainContainer() {
           onWidthChange={onLeftSidebarWidthChange}
           width={sidebarWidth}
         />
-        <div
-          className={classNames({
-            "relative transition-all transform duration-400": true,
-            "translate-x-0 opacity-0": isPreviewMode,
-            "flex flex-col overflow-auto opacity-100": !isPreviewMode,
-            [`w-[${tabsPanelWidth}px] min-w-[${tabsPanelWidth}px] translate-x-${tabsPanelWidth}`]: !isPreviewMode,
-          })}
-          ref={sidebarRef}
-          style={{
-            borderRight: "1px solid #e8e8e8",
-          }}
-        >
+        {!isPreviewMode && (
           <div
-            className={`cursor-ew-resize ${tailwindLayers.resizer}`}
-            onMouseDown={onMouseDown}
-            onTouchEnd={onMouseUp}
-            onTouchStart={onTouchStart}
-            style={{ width: tabsPanelWidth }}
+            className={classNames({
+              "relative transition-all transform duration-400": true,
+              "translate-x-0 opacity-0": isPreviewMode,
+              "flex flex-col overflow-auto opacity-100": !isPreviewMode,
+              [`w-[${tabsPanelWidth}px] min-w-[${tabsPanelWidth}px] translate-x-${tabsPanelWidth}`]: !isPreviewMode,
+            })}
+            ref={sidebarRef}
+            style={{
+              borderRight: "1px solid #e8e8e8",
+            }}
           >
-            <SentryRoute component={EditorsRouter} />
+            <div
+              className={`cursor-ew-resize ${tailwindLayers.resizer}`}
+              onMouseDown={onMouseDown}
+              onTouchEnd={onMouseUp}
+              onTouchStart={onTouchStart}
+              style={{ width: tabsPanelWidth }}
+            >
+              <SentryRoute component={EditorsRouter} />
+            </div>
           </div>
-        </div>
+        )}
         <div
           className="relative flex flex-col overflow-auto"
           id="app-body"
-          style={{ width: canvasWidth + 50 }}
+          style={{ width: canvasWidth }}
         >
           <WidgetsEditor />
         </div>

@@ -34,8 +34,7 @@ const mainCanvasReducer = createImmerReducer(initialState, {
   ) => {
     state.width = action.payload.width || state.width;
 
-    state.zoom = Number(Math.abs(state.width / 1500).toFixed(3));
-    console.log("POC", state.width, state.zoom);
+    state.zoom = Number(Math.abs(state.width / window.screen.width).toFixed(3));
     // state.zoom = Number(localStorage.getItem("zoomLevel")) || 1;
     state.initialized = true;
   },
