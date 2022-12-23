@@ -34,7 +34,8 @@ const mainCanvasReducer = createImmerReducer(initialState, {
   ) => {
     state.width = action.payload.width || state.width;
     console.log("POC", state.width);
-    state.zoom = Number(Math.abs(state.width / 1000).toFixed(3));
+    // state.zoom = Number(Math.abs(state.width / 1000).toFixed(3));
+    state.zoom = Number(localStorage.getItem("zoomLevel")) || 1;
     state.initialized = true;
   },
   [ReduxActionTypes.UPDATE_TABS_PANEL_WIDTH]: (

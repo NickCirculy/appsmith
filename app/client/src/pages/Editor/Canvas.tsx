@@ -26,7 +26,7 @@ interface CanvasProps {
   pageId: string;
   canvasWidth: number;
 
-  canvasZoom: number;
+  canvasZoom?: number;
 }
 
 type PointerEventDataType = {
@@ -75,7 +75,7 @@ const useShareMousePointerEvent = () => {
 
 // TODO(abhinav): get the render mode from context
 const Canvas = memo((props: CanvasProps) => {
-  const { canvasWidth, canvasZoom, pageId } = props;
+  const { canvasWidth, canvasZoom = 1, pageId } = props;
   const isPreviewMode = useSelector(previewModeSelector);
   const selectedTheme = useSelector(getSelectedAppTheme);
 
