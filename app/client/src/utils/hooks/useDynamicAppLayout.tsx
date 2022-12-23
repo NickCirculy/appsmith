@@ -1,30 +1,29 @@
 import { debounce, get } from "lodash";
-import { useDispatch, useSelector } from "react-redux";
 import { useCallback, useEffect, useMemo } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
+import { updateCanvasLayoutAction } from "actions/editorActions";
+import { APP_SETTINGS_PANE_WIDTH } from "constants/AppConstants";
 import {
   DefaultLayoutType,
   layoutConfigurations,
 } from "constants/WidgetConstants";
-import {
-  getExplorerPinned,
-  getExplorerWidth,
-} from "selectors/explorerSelector";
+import { APP_MODE } from "entities/App";
+import { getIsAppSettingsPaneOpen } from "selectors/appSettingsPaneSelectors";
 import {
   getCurrentApplicationLayout,
   getCurrentPageId,
   getMainCanvasProps,
   previewModeSelector,
 } from "selectors/editorSelectors";
-import { APP_MODE } from "entities/App";
+import { getAppMode } from "selectors/entitiesSelector";
+import {
+  getExplorerPinned,
+  getExplorerWidth,
+} from "selectors/explorerSelector";
+import { getIsCanvasInitialized } from "selectors/mainCanvasSelectors";
 import { scrollbarWidth } from "utils/helpers";
 import { useWindowSizeHooks } from "./dragResizeHooks";
-import { getAppMode } from "selectors/entitiesSelector";
-import { APP_SETTINGS_PANE_WIDTH } from "constants/AppConstants";
-import { updateCanvasLayoutAction } from "actions/editorActions";
-import { getIsCanvasInitialized } from "selectors/mainCanvasSelectors";
-import { getIsAppSettingsPaneOpen } from "selectors/appSettingsPaneSelectors";
-import { getPropertyPaneWidth } from "selectors/propertyPaneSelectors";
 
 const BORDERS_WIDTH = 2;
 const GUTTER_WIDTH = 72;
@@ -32,7 +31,7 @@ const GUTTER_WIDTH = 72;
 export const useDynamicAppLayout = () => {
   const dispatch = useDispatch();
   const explorerWidth = useSelector(getExplorerWidth);
-  const propertyPaneWidth = useSelector(getPropertyPaneWidth);
+  // const propertyPaneWidth = useSelector(getPropertyPaneWidth);
   const isExplorerPinned = useSelector(getExplorerPinned);
   const appMode: APP_MODE | undefined = useSelector(getAppMode);
   const { width: screenWidth } = useWindowSizeHooks();
@@ -42,6 +41,9 @@ export const useDynamicAppLayout = () => {
   const isCanvasInitialized = useSelector(getIsCanvasInitialized);
   const appLayout = useSelector(getCurrentApplicationLayout);
   const isAppSettingsPaneOpen = useSelector(getIsAppSettingsPaneOpen);
+  const propertyPaneWidth = useSelector(
+    (state) => state.ui.mainCanvas.tabsWidth,
+  );
 
   // /**
   //  * calculates min height
@@ -99,6 +101,7 @@ export const useDynamicAppLayout = () => {
     ) {
       calculatedWidth -= propertyPaneWidth;
     }
+    // calculatedWidth -= tabsPanelWidth - 100;
 
     // if app setting pane is open, we need to subtract the width of app setting page width
     if (isAppSettingsPaneOpen === true && appMode === APP_MODE.EDIT) {

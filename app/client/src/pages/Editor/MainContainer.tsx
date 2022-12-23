@@ -1,31 +1,23 @@
-import styled from "styled-components";
 import * as Sentry from "@sentry/react";
+import React, { useCallback, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Route, useLocation } from "react-router";
+import styled from "styled-components";
 
-import EditorsRouter from "./routes";
-import BottomBar from "./BottomBar";
-import WidgetsEditor from "./WidgetsEditor";
+import { updateTabsPanelWidth } from "actions/editorActions";
 import { updateExplorerWidthAction } from "actions/explorerActions";
-import {
-  BUILDER_CUSTOM_PATH,
-  BUILDER_PATH,
-  BUILDER_PATH_DEPRECATED,
-} from "constants/routes";
-import EntityExplorerSidebar from "components/editorComponents/Sidebar";
-import classNames from "classnames";
-import { getCanvasWidth, previewModeSelector } from "selectors/editorSelectors";
 import { routeChanged } from "actions/focusHistoryActions";
+import classNames from "classnames";
+import EntityExplorerSidebar from "components/editorComponents/Sidebar";
+import { tailwindLayers } from "constants/Layers";
+import SideNavbar from "pages/Editor/SideNavbar";
+import { getCanvasWidth, previewModeSelector } from "selectors/editorSelectors";
 import { getExplorerWidth } from "selectors/explorerSelector";
 import { AppsmithLocationState } from "utils/history";
-import SideNavbar from "pages/Editor/SideNavbar";
 import useHorizontalResize from "utils/hooks/useHorizontalResize";
-import { tailwindLayers } from "constants/Layers";
-import {
-  updateCanvasLayoutAction,
-  updateTabsPanelWidth,
-} from "actions/editorActions";
+import BottomBar from "./BottomBar";
+import EditorsRouter from "./routes";
+import WidgetsEditor from "./WidgetsEditor";
 
 const SentryRoute = Sentry.withSentryRouting(Route);
 
@@ -78,7 +70,7 @@ function MainContainer() {
 
   const onDragEnd = useCallback(() => {
     dispatch(updateTabsPanelWidth(tabsPanelWidth));
-    dispatch(updateCanvasLayoutAction(screen.width - tabsPanelWidth - 100));
+    // dispatch(updateCanvasLayoutAction(screen.width - tabsPanelWidth - 100));
   }, [tabsPanelWidth]);
 
   const {
