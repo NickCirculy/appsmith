@@ -41,9 +41,7 @@ export const useDynamicAppLayout = () => {
   const isCanvasInitialized = useSelector(getIsCanvasInitialized);
   const appLayout = useSelector(getCurrentApplicationLayout);
   const isAppSettingsPaneOpen = useSelector(getIsAppSettingsPaneOpen);
-  const propertyPaneWidth = useSelector(
-    (state) => state.ui.mainCanvas.tabsWidth,
-  );
+  const tabsPaneWidth = useSelector((state) => state.ui.mainCanvas.tabsWidth);
 
   // /**
   //  * calculates min height
@@ -99,19 +97,19 @@ export const useDynamicAppLayout = () => {
       !isAppSettingsPaneOpen &&
       appMode === APP_MODE.EDIT
     ) {
-      calculatedWidth -= propertyPaneWidth;
+      calculatedWidth = calculatedWidth - tabsPaneWidth - 100;
     }
     // calculatedWidth -= tabsPanelWidth - 100;
 
     // if app setting pane is open, we need to subtract the width of app setting page width
-    if (isAppSettingsPaneOpen === true && appMode === APP_MODE.EDIT) {
-      calculatedWidth -= APP_SETTINGS_PANE_WIDTH;
-    }
+    // if (isAppSettingsPaneOpen === true && appMode === APP_MODE.EDIT) {
+    //   calculatedWidth -= APP_SETTINGS_PANE_WIDTH;
+    // }
 
     // if explorer is closed or its preview mode, we don't need to subtract the EE width
-    if (!isPreviewMode && appMode === APP_MODE.EDIT) {
-      calculatedWidth -= 600 + 55;
-    }
+    // if (!isPreviewMode && appMode === APP_MODE.EDIT) {
+    //   calculatedWidth -= 600 + 55;
+    // }
 
     switch (true) {
       case maxWidth < 0:
@@ -185,9 +183,8 @@ export const useDynamicAppLayout = () => {
     mainCanvasProps?.width,
     isPreviewMode,
     explorerWidth,
-    propertyPaneWidth,
+    tabsPaneWidth,
     isExplorerPinned,
-    propertyPaneWidth,
     isAppSettingsPaneOpen,
   ]);
 
