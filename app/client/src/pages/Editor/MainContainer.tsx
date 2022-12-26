@@ -12,6 +12,7 @@ import EntityExplorerSidebar from "components/editorComponents/Sidebar";
 import { tailwindLayers } from "constants/Layers";
 import SideNavbar from "pages/Editor/SideNavbar";
 import { getCanvasWidth, previewModeSelector } from "selectors/editorSelectors";
+import { Installer } from "pages/Editor/Explorer/Libraries/Installer";
 import { getExplorerWidth } from "selectors/explorerSelector";
 import { AppsmithLocationState } from "utils/history";
 import useHorizontalResize from "utils/hooks/useHorizontalResize";
@@ -132,6 +133,7 @@ function MainContainer() {
           "transition-all transform duration-400": true,
         })}
       />
+      <Installer left={sidebarWidth} />
     </>
   );
 }
