@@ -97,7 +97,7 @@ export const useDynamicAppLayout = () => {
       !isAppSettingsPaneOpen &&
       appMode === APP_MODE.EDIT
     ) {
-      calculatedWidth = calculatedWidth - tabsPaneWidth - 100;
+      calculatedWidth = calculatedWidth - tabsPaneWidth;
     }
     // calculatedWidth -= tabsPanelWidth - 100;
 
@@ -147,9 +147,10 @@ export const useDynamicAppLayout = () => {
     }
   };
 
-  const debouncedResize = useCallback(debounce(resizeToLayout, 250), [
+  const debouncedResize = useCallback(resizeToLayout, [
     mainCanvasProps,
     screenWidth,
+    tabsPaneWidth,
   ]);
 
   /**

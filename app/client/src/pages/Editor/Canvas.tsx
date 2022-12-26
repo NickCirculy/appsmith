@@ -107,7 +107,7 @@ const Canvas = memo((props: CanvasProps) => {
     return (
       <Container
         background={backgroundForCanvas}
-        className="relative mx-auto t--canvas-artboard pb-52"
+        className="relative mx-auto t--canvas-artboard pb-52 transition-all transform"
         data-testid="t--canvas-artboard"
         id="art-board"
         onMouseMove={(e) => {
@@ -121,7 +121,7 @@ const Canvas = memo((props: CanvasProps) => {
           !!data && delayedShareMousePointer(data);
         }}
         style={{
-          width: canvasWidth,
+          width: canvasWidth / canvasZoom,
           transform: `scale(${canvasZoom})`,
           transformOrigin: "0 0",
         }}
