@@ -111,6 +111,7 @@ export type UpdateApplicationPayload = {
   currentApp?: boolean;
   appLayout?: AppLayoutConfig;
   applicationVersion?: number;
+  embedSetting?: AppEmbedSetting;
 };
 
 export type UpdateApplicationRequest = UpdateApplicationPayload & {
@@ -172,6 +173,12 @@ export interface ImportApplicationRequest {
   onSuccessCallback?: () => void;
 }
 
+export interface AppEmbedSetting {
+  height?: string;
+  width?: string;
+  showNavigationBar?: boolean;
+}
+
 export interface UpdateApplicationResponse {
   id: string;
   modifiedBy: string;
@@ -192,6 +199,7 @@ export interface UpdateApplicationResponse {
   appLayout: AppLayoutConfig;
   new: boolean;
   modifiedAt: Date;
+  embedSetting: AppEmbedSetting;
 }
 
 export interface PageDefaultMeta {
