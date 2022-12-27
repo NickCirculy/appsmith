@@ -1,9 +1,8 @@
-import { debounce, get } from "lodash";
+import { get } from "lodash";
 import { useCallback, useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { updateCanvasLayoutAction } from "actions/editorActions";
-import { APP_SETTINGS_PANE_WIDTH } from "constants/AppConstants";
 import {
   DefaultLayoutType,
   layoutConfigurations,
@@ -132,6 +131,13 @@ export const useDynamicAppLayout = () => {
     }
   };
 
+  function calculateCanvasZoom(canvasWidth: number) {
+    const { maxWidth } = layoutWidthRange;
+    const availableWidth = screenWidth - tabsPaneWidth - 100;
+    if (!maxWidth) return 1;
+    return Number(Math.abs(canvasWidth / availableWidth).toFixed(3));
+  }
+
   /**
    * resizes the layout based on the layout type
    *
@@ -140,10 +146,11 @@ export const useDynamicAppLayout = () => {
    */
   const resizeToLayout = () => {
     const calculatedWidth = calculateCanvasWidth();
+    const calculatedZoom = calculateCanvasZoom(calculatedWidth);
     const { width: rightColumn } = mainCanvasProps || {};
 
     if (rightColumn !== calculatedWidth || !isCanvasInitialized) {
-      dispatch(updateCanvasLayoutAction(calculatedWidth));
+      dispatch(updateCanvasLayoutAction(calculatedWidth, calculatedZoom));
     }
   };
 

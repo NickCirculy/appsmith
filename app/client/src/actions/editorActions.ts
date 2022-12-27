@@ -38,11 +38,12 @@ export const deleteCanvasCardsState = () => ({
  * @param width
  * @returns
  */
-export const updateCanvasLayoutAction = (width: number) => {
+export const updateCanvasLayoutAction = (width: number, zoom = 1) => {
   return {
     type: ReduxActionTypes.UPDATE_CANVAS_LAYOUT,
     payload: {
       width,
+      zoom,
     },
   };
 };
